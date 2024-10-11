@@ -26,10 +26,10 @@ STATIC_FOLDER = required_folder(APP_FOLDER, "static")
 UPLOAD_FOLDER = required_folder(APP_FOLDER, "uploads")
 
 # jasmin settings:
-JASMIN_HOST = '0.0.0.0'
-JASMIN_PORT = 8990
-JASMIN_USER = 'jcliadmin'
-JASMIN_PWD = 'jclipwd'
+JASMIN_HOST = os.getenv('JASMIN_HOST', '127.0.0.1')
+JASMIN_PORT = os.getenv('JASMIN_PORT', 8990)
+JASMIN_USER = os.getenv('JASMIN_USER', 'jcliadmin')
+JASMIN_PWD = os.getenv('JASMIN_USER', 'jcliadmin')
 
 # send email on regstration
 VERIFY_EMAIL = True
