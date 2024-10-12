@@ -29,7 +29,7 @@ UPLOAD_FOLDER = required_folder(APP_FOLDER, "uploads")
 JASMIN_HOST = os.getenv('JASMIN_HOST', '127.0.0.1')
 JASMIN_PORT = os.getenv('JASMIN_PORT', 8990)
 JASMIN_USER = os.getenv('JASMIN_USER', 'jcliadmin')
-JASMIN_PWD = os.getenv('JASMIN_USER', 'jcliadmin')
+JASMIN_PWD = os.getenv('JASMIN_USER', 'jclipwd')
 
 # send email on regstration
 VERIFY_EMAIL = True
@@ -59,7 +59,7 @@ REDIS_SERVER = "localhost:6379"
 
 # logger settings
 LOGGERS = [
-    "warning:stdout"
+    "debug:stdout"
 ]  # syntax "severity:filename" filename can be stderr or stdout
 
 # single sign on Google (will be used if provided)
