@@ -8,6 +8,7 @@ from . common import jasmin
 from .utils import cols_split
 
 @action('imt_remove/<order>', method=['GET', 'POST'])
+@action.uses(db, flash, session)
 def imt_remove(order):
     script = ''
     filters = ''
@@ -64,31 +65,32 @@ def manage_imts():
     title='Manage MT Interceptors'
     form = Form(db.j_imt, formstyle=FormStyleBulma)
     if form.accepted:
-        order = form.vars.mtorder
-        i_type = form.vars.mttype
-        script = 'python3('+form.vars.mtscript+')'
+        order = form.vars['mtorder']
+        i_type = form.vars['mttype']
+        script = 'python3('+form.vars['mtscript']+')'
         if i_type != 'DefaultInterceptor':
             ff=''
-            for f in form.vars.mtfilters:
-                ff += get_f_name(f)
+            for f in form.vars['mtfilters']:
+                ff += db.mt_filter[f].fid
                 ff+=';'
             filters = ff
         else:
             filters= ''
             order = "0"
-            form.vars.mtorder = '0'
-            form.vars.mtfilters = ''
+            form.vars['mtorder'] = '0'
+            form.vars['mtfilters'] = ''
         
         resp= jasmin.interceptor(['mt',i_type, order, script,filters[:-1]])
         if not resp:
             id = db.j_imt.insert(**db.j_imt._filter_fields(form.vars))
-            flash.set("Added a %s with order %s" % (form.vars.mttype, order))
+            flash.set("Added a %s with order %s" % (form.vars['mttype'], order))
         else:
             flash.set(resp)
     imts = get_imts()
     return dict(form=form, imts=imts, type="mt", title=title)
 
 @action('imo_remove/<order>', method=['GET', 'POST'])
+@action.uses(db, flash, session)
 def imo_remove(order):
     script = ''
     filters = ''
@@ -145,24 +147,24 @@ def manage_imos():
     
     form = Form(db.j_imo, formstyle=FormStyleBulma)
     if form.accepted:
-        order = form.vars.moorder
-        i_type = form.vars.motype
-        script = 'python3('+form.vars.moscript+')'
+        order = form.vars['moorder']
+        i_type = form.vars['motype']
+        script = 'python3('+form.vars['moscript']+')'
         if i_type != 'DefaultInterceptor':
             ff=''
-            for f in form.vars.mofilters:
-                ff += get_f_name(f)
+            for f in form.vars['mofilters']:
+                ff += db.mt_filter[f].fid
                 ff+=';'
             filters = ff
         else:
             filters = ''
-            form.vars.moorder = '0'
+            form.vars['moorder'] = '0'
             order = "0"
-            form.vars.mofilters = ''
+            form.vars['mofilters'] = ''
         resp= jasmin.interceptor(['mo',i_type, order, script,filters[:-1]])
         if not resp:
             id = db.j_imo.insert(**db.j_imo._filter_fields(form.vars))
-            flash.set("Added a MO %s with order %s" % (form.vars.motype,order))
+            flash.set("Added a MO %s with order %s" % (form.vars['motype'],order))
         else:
             flash.set(resp)
     imos = get_imos()
