@@ -19,5 +19,5 @@ RUN py4web set_password --password admin
 COPY . /apps/jasmin-gui/
 RUN chown -R ${NON_ROOT_USER}:${NON_ROOT_USER} ${APPS_DIR}
 USER ${NON_ROOT_USER}
-
+EXPOSE 8000
 CMD ["py4web", "run", "apps"]
